@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 # Install curl (that will download rig), and configure locales
 RUN apt-get update && \
     apt-get install -y \
+    python3-pip \
     curl \
     gnupg \
     locales && \
@@ -29,11 +30,12 @@ RUN curl -L https://rig.r-pkg.org/deb/rig.gpg -o /etc/apt/trusted.gpg.d/rig.gpg 
     rm -rf /var/lib/apt/lists/*
 
 # Install R packages (will be installed in the path specified in R_LIBS_USER)
-RUN R -e "install.packages(c('pak'))"
-RUN R -e "pak::pkg_install(c('SeuratObject@4.1.3','Seurat@4.3.0','Signac@1.11.0', 'bioc::MAST@1.30.0', 'bioc::DESeq2@1.44.0', 'optparse'))"
-RUN R -e "pak::pkg_install(c('bioc::scDblFinder@1.18.0'))"
-RUN R -e "pak::pkg_install(c('harmony@1.2.0'))"
-RUN R -e "pak::pkg_install(c('tidyverse@2.0.0'))"
-RUN R -e "pak::pkg_install(c('hdf5r'))"
+RUN R -e "install.packages(c('pak'))" && \
+    R -e "pak::pkg_install(c('SeuratObject@4.1.3','Seurat@4.3.0','Signac@1.11.0', 'bioc::MAST@1.30.0', 'bioc::DESeq2@1.44.0', 'optparse'))" && \
+    R -e "pak::pkg_install(c('bioc::scDblFinder@1.18.0'))" && \
+    R -e "pak::pkg_install(c('harmony@1.2.0'))" && \
+    R -e "pak::pkg_install(c('tidyverse@2.0.0'))" && \
+    R -e "pak::pkg_install(c('hdf5r'))" && \
+    R -e "pak::pak_cleanup(force=TRUE)"
 
-RUN R -e "pak::pak_cleanup(force=TRUE)"
+RUN pip3 install snakemake
