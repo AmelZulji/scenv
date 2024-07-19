@@ -31,6 +31,7 @@ RUN useradd -s /bin/bash -m "$DEFAULT_USER"
 RUN echo "${DEFAULT_USER}:${DEFAULT_USER}" | chpasswd
 RUN usermod -a -G staff "${DEFAULT_USER}"
 
+# set session settings. List of all possibilities here: https://docs.posit.co/ide/user/ide/guide/productivity/custom-settings.html 
 RUN mkdir -p "/home/${DEFAULT_USER}/.config/rstudio" && \
     cat <<EOF >"/home/${DEFAULT_USER}/.config/rstudio/rstudio-prefs.json"
 {
@@ -38,7 +39,11 @@ RUN mkdir -p "/home/${DEFAULT_USER}/.config/rstudio" && \
     "always_save_history": false,
     "reuse_sessions_for_project_links": true,
     "posix_terminal_shell": "bash",
-    "initial_working_directory": "/"
+    "initial_working_directory": "/",
+    "insert_native_pipe_operator": true,
+    "restore_last_project": false,
+    "load_workspace": false,
+    "highlight_selected_line": true
 }
 EOF
 
