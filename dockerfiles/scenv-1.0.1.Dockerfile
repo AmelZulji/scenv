@@ -3,7 +3,6 @@ FROM ubuntu:20.04
 # curl for downloading and gcc for compiling
 RUN apt-get update \
     && apt-get install -y \
-    git \
     curl \
     gcc
 
