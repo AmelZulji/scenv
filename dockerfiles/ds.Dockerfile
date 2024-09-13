@@ -27,8 +27,8 @@ ENV PATH=/opt/python/"${PYTHON_VERSION}"/bin:$PATH
 RUN pip install --upgrade pip setuptools wheel \
     # install needed packages
     && pip install \
-    scanpy==1.10.2 \
-    decoupler==1.7.0 \
+    # scanpy==1.10.2 \
+    # decoupler==1.7.0 \
     snakemake==8.16.0
 
 #### R ####
@@ -45,11 +45,40 @@ RUN curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.de
     # symlink Rscript to the default path
     && ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
-RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")' \
-    && R -e 'pak::pkg_install(c("SeuratObject@4.1.3","Seurat@4.3.0","Signac@1.11.0", "bioc::MAST@1.30.0", "bioc::DESeq2@1.44.0", "optparse", "bioc::scDblFinder@1.18.0", "harmony@1.2.0", "tidyverse@2.0.0", "hdf5r", "bioc::glmGamPoi@1.16.0", "bioc::clusterProfiler@4.12.1"))' \
-    # clean pak cache
-    && R -e "pak::pak_cleanup(force=TRUE)" \
-    # clean apt cache https://docs.docker.com/build/building/best-practices/#run:~:text=In%20addition%2C%20when,is%20not%20required.
-    && rm -rf /var/lib/apt/lists/* \
-    # remove tmp files
-    && rm -r /tmp/*
+# Install pak package from R package manager
+RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")'
+
+# Install other required R packages via pak
+RUN R -e 'pak::pkg_install(c( \
+    "SeuratObject@4.1.3", \
+    "Seurat@4.3.0", \
+    "Signac@1.11.0", \
+    # "bioc::MAST@1.30.0", \ 
+    # "bioc::DESeq2@1.44.0", \
+    "optparse", \
+    # "bioc::scDblFinder@1.18.0", \
+    # "harmony@1.2.0", \
+    "tidyverse@2.0.0", \
+    "hdf5r", \
+    # "bioc::clusterProfiler@4.12.1", \
+    "bioc::glmGamPoi@1.16.0" \
+    ))'
+
+# Clean pak cache
+RUN R -e "pak::pak_cleanup(force=TRUE)"
+
+# install quarto
+ENV QUARTO_VERSION="1.5.54"
+RUN mkdir -p /opt/quarto/${QUARTO_VERSION}
+RUN curl -o quarto.tar.gz -L "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz"
+RUN tar -zxvf quarto.tar.gz \
+    -C "/opt/quarto/${QUARTO_VERSION}" \
+    --strip-components=1
+RUN rm quarto.tar.gz
+
+# Clean apt cache to reduce the image size
+RUN rm -rf /var/lib/apt/lists/*
+
+# Remove temporary files
+RUN rm -r /tmp/*
+
