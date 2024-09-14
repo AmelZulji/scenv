@@ -70,6 +70,7 @@ RUN R -e 'pak::pkg_install(c( \
     # "bioc::MAST@1.30.0", \ 
     # "bioc::DESeq2@1.44.0", \
     "optparse", \
+    "languageserver", \ 
     # "bioc::scDblFinder@1.18.0", \
     # "harmony@1.2.0", \
     "tidyverse@2.0.0" \
