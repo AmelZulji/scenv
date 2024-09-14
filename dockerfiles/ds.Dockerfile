@@ -44,6 +44,7 @@ RUN pip install --upgrade pip setuptools wheel \
     # scanpy==1.10.2 \
     # decoupler==1.7.0 \
     snakemake==8.16.0 \ 
+    # needed for python in vscode/quarto
     ipykernel
 
 #### R ####
@@ -60,10 +61,10 @@ RUN curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.de
     # symlink Rscript to the default path
     && ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
-# Install pak package from R package manager
+# Install R package manager - pak (uses package binaries from posit - usefull for speed)
 RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")'
 
-# Install other required R packages via pak
+# Use pak to install other packages
 RUN R -e 'pak::pkg_install(c( \
     # "SeuratObject@4.1.3", \
     # "Seurat@4.3.0", \
@@ -71,7 +72,9 @@ RUN R -e 'pak::pkg_install(c( \
     # "bioc::MAST@1.30.0", \ 
     # "bioc::DESeq2@1.44.0", \
     "optparse", \
+    # supports R code editing in vscode 
     "languageserver", \ 
+    # enables combining R and python
     "reticulate", \
     "tidyverse@2.0.0" \
     # "bioc::scDblFinder@1.18.0", \
