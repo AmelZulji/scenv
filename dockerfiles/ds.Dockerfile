@@ -43,7 +43,8 @@ RUN pip install --upgrade pip setuptools wheel \
     && pip install \
     # scanpy==1.10.2 \
     # decoupler==1.7.0 \
-    snakemake==8.16.0
+    snakemake==8.16.0 \ 
+    ipykernel
 
 #### R ####
 # install from Posit compiled binaries https://docs.posit.co/resources/install-r.html
@@ -71,9 +72,10 @@ RUN R -e 'pak::pkg_install(c( \
     # "bioc::DESeq2@1.44.0", \
     "optparse", \
     "languageserver", \ 
+    "reticulate", \
+    "tidyverse@2.0.0" \
     # "bioc::scDblFinder@1.18.0", \
     # "harmony@1.2.0", \
-    "tidyverse@2.0.0" \
     # "hdf5r", \
     # "bioc::clusterProfiler@4.12.1", \
     # "bioc::glmGamPoi@1.16.0" \
