@@ -45,7 +45,8 @@ RUN pip install --upgrade pip setuptools wheel \
     # decoupler==1.7.0 \
     snakemake==8.16.0 \ 
     # needed for python in vscode/quarto
-    ipykernel
+    ipykernel \
+    nbclient
 
 #### R ####
 # install from Posit compiled binaries https://docs.posit.co/resources/install-r.html
