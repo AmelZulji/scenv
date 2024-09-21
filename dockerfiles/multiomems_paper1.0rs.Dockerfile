@@ -1,4 +1,4 @@
-FROM amelzulji/scenv:1.0.1
+FROM amelzulji/multiomems_paper:1.0
 
 ENV DEFAULT_USER="rstudio"
 
@@ -17,11 +17,7 @@ RUN apt-get update && \
     libobjc-9-dev \
     libobjc4 \
     psmisc \
-    sudo \
-    locales \ 
-    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-	    && locale-gen en_US.utf8 \
-	    && /usr/sbin/update-locale LANG=en_US.UTF-8
+    sudo
 
 RUN curl -O https://download2.rstudio.org/server/focal/amd64/rstudio-server-2024.04.2-764-amd64.deb \
     && apt-get install -y ./rstudio-server-2024.04.2-764-amd64.deb \
