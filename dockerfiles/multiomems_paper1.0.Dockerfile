@@ -61,7 +61,7 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
         "bioc::DESeq2@1.44.0", \
         "bioc::scDblFinder@1.18.0", \
         "bioc::glmGamPoi@1.16.0", \
-        "bioc::clusterProfiler@4.12.1" \
+        "bioc::clusterProfiler@4.12.6" \
     ))' \
     # clean pak cache
     && R -e "pak::pak_cleanup(force=TRUE)" \
