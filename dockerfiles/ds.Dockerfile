@@ -39,6 +39,9 @@ ENV PATH=/opt/python/"${PYTHON_VERSION}"/bin:$PATH
 
     # update core python packages
 RUN pip install --upgrade pip setuptools wheel \
+    # # confgiure pip to use posit package manager
+    # && pip config set global.index-url https://packagemanager.posit.co/pypi/latest/simple \
+    # && pip config set global.trusted-host packagemanager.posit.co \
     # install needed packages
     && pip install \
     # scanpy==1.10.2 \
@@ -62,31 +65,60 @@ RUN curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.de
     # symlink Rscript to the default path
     && ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
-# Install R package manager - pak (uses package binaries from posit - usefull for speed)
-RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")'
+# # Install R package manager - pak (uses package binaries from posit - usefull for speed)
+# RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")'
 
-# Use pak to install other packages
-RUN R -e 'pak::pkg_install(c( \
-    # "SeuratObject@4.1.3", \
-    # "Seurat@4.3.0", \
-    # "Signac@1.11.0", \
-    # "bioc::MAST@1.30.0", \ 
-    # "bioc::DESeq2@1.44.0", \
-    "optparse", \
-    # supports R code editing in vscode 
-    "languageserver", \ 
-    # enables combining R and python
-    "reticulate", \
-    "tidyverse@2.0.0" \
-    # "bioc::scDblFinder@1.18.0", \
-    # "harmony@1.2.0", \
-    # "hdf5r", \
-    # "bioc::clusterProfiler@4.12.1", \
-    # "bioc::glmGamPoi@1.16.0" \
-    ))'
+# # Use pak to install other packages
+# RUN R -e 'pak::pkg_install(c( \
+#     # "SeuratObject@4.1.3", \
+#     # "Seurat@4.3.0", \
+#     # "Signac@1.11.0", \
+#     # "bioc::MAST@1.30.0", \ 
+#     # "bioc::DESeq2@1.44.0", \
+#     "optparse", \
+#     # supports R code editing in vscode 
+#     "languageserver", \ 
+#     # enables combining R and python
+#     "reticulate", \
+#     "tidyverse@2.0.0" \
+#     # "bioc::scDblFinder@1.18.0", \
+#     # "harmony@1.2.0", \
+#     # "hdf5r", \
+#     # "bioc::clusterProfiler@4.12.1", \
+#     # "bioc::glmGamPoi@1.16.0" \
+#     ))'
 
-# Clean pak cache
-RUN R -e "pak::pak_cleanup(force=TRUE)"
+# # Clean pak cache
+# RUN R -e "pak::pak_cleanup(force=TRUE)"
+
+
+RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest"); \
+          options(BioC_mirror = "https://packagemanager.posit.co/bioconductor/latest", \
+                    BIOCONDUCTOR_CONFIG_FILE = "https://packagemanager.posit.co/bioconductor/latest/config.yaml", \
+                    repos = c(CRAN = "https://packagemanager.posit.co/cran/__linux__/focal/latest")); \
+          pak::pkg_install(c( \
+              "optparse", \
+              "languageserver", \
+              "reticulate", \
+              "bioc::MAST@1.30.0", \ 
+              "tidyverse@2.0.0" \
+          )); \
+          pak::pak_cleanup(force=TRUE)'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #### RSTUDIO SERVER ####
 ENV DEFAULT_USER="rstudio"
