@@ -54,6 +54,7 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
         "hdf5r", \
         "immunogenomics/presto@1.0.0", \
         "optparse", \
+        "openxlsx2", \
         "tidyverse@2.0.0", \
         "bioc::BayesSpace@1.14.0", \
         "bioc::MAST@1.30.0", \
