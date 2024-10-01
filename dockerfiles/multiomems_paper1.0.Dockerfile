@@ -55,7 +55,6 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
         "immunogenomics/presto@1.0.0", \
         "optparse", \
         "tidyverse@2.0.0", \
-        "magick@2.8.5", \
         "bioc::BayesSpace@1.14.0", \
         "bioc::MAST@1.30.0", \
         "lme4/lme4@bfd7a44d0a718fff090412871504858559a0829f", \
