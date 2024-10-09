@@ -70,3 +70,8 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
     && rm -rf /var/lib/apt/lists/* \
     # remove tmp files
     && rm -r /tmp/*
+
+RUN R -e 'pak::pkg_install(c( \
+        "bioc::batchelor@1.20.0", \
+        "qs" \
+    ))'
