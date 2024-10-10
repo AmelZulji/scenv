@@ -75,3 +75,7 @@ RUN R -e 'pak::pkg_install(c( \
         "bioc::batchelor@1.20.0", \
         "qs" \
     ))'
+
+RUN R -e 'pak::pkg_install(c( \
+    "argparse" \
+))'
