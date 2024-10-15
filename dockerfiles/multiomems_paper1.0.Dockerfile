@@ -79,3 +79,7 @@ RUN R -e 'pak::pkg_install(c( \
 RUN R -e 'pak::pkg_install(c( \
     "argparse" \
 ))'
+
+RUN R -e 'pak::pkg_install(c( \
+    "bioc::org.Hs.eg.db@3.19.1" \
+))'
