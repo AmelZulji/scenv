@@ -51,6 +51,8 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
         "Seurat@4.3.0", \
         "Signac@1.11.0", \
         "harmony@1.2.0", \
+        "qs", \ 
+        "argparse", \
         "hdf5r", \
         "immunogenomics/presto@1.0.0", \
         "optparse", \
@@ -62,7 +64,11 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
         "bioc::DESeq2@1.44.0", \
         "bioc::scDblFinder@1.18.0", \
         "bioc::glmGamPoi@1.16.0", \
-        "bioc::clusterProfiler@4.12.6" \
+        "bioc::clusterProfiler@4.12.6", \
+        "bioc::batchelor@1.20.0", \
+        "bioc::org.Hs.eg.db@3.19.1", \
+        "bioc::biovizBase@1.52.0", \
+        "bioc::EnsDb.Hsapiens.v86@2.99.0" \
     ))' \
     # clean pak cache
     && R -e "pak::pak_cleanup(force=TRUE)" \
@@ -70,16 +76,3 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
     && rm -rf /var/lib/apt/lists/* \
     # remove tmp files
     && rm -r /tmp/*
-
-RUN R -e 'pak::pkg_install(c( \
-        "bioc::batchelor@1.20.0", \
-        "qs" \
-    ))'
-
-RUN R -e 'pak::pkg_install(c( \
-    "argparse" \
-))'
-
-RUN R -e 'pak::pkg_install(c( \
-    "bioc::org.Hs.eg.db@3.19.1" \
-))'
