@@ -76,3 +76,9 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
     && rm -rf /var/lib/apt/lists/* \
     # remove tmp files
     && rm -r /tmp/*
+
+    # update core python packages
+RUN pip install --upgrade pip setuptools wheel \
+    # install needed packages
+    && pip install \
+    macs3
