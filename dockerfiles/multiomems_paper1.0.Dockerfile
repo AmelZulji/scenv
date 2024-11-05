@@ -79,7 +79,8 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
 
 
 RUN R -e 'pak::pkg_install(c( \
-    "bioc::BSgenome.Hsapiens.UCSC.hg38@1.4.5" \
+    "bioc::BSgenome.Hsapiens.UCSC.hg38@1.4.5", \
+    "qlcMatrix@0.9.8" \
     ))' \
     # clean pak cache
     && R -e "pak::pak_cleanup(force=TRUE)" \
