@@ -77,8 +77,13 @@ RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__
     # remove tmp files
     && rm -r /tmp/*
 
-    # update core python packages
-RUN pip install --upgrade pip setuptools wheel \
-    # install needed packages
-    && pip install \
-    macs3
+
+RUN R -e 'pak::pkg_install(c( \
+    "bioc::BSgenome.Hsapiens.UCSC.hg38@1.4.5" \
+    ))' \
+    # clean pak cache
+    && R -e "pak::pak_cleanup(force=TRUE)" \
+    # clean apt cache https://docs.docker.com/build/building/best-practices/#run:~:text=In%20addition%2C%20when,is%20not%20required.
+    && rm -rf /var/lib/apt/lists/* \
+    # remove tmp files
+    && rm -r /tmp/*
