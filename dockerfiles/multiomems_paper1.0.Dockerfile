@@ -88,3 +88,5 @@ RUN R -e 'pak::pkg_install(c( \
     && rm -rf /var/lib/apt/lists/* \
     # remove tmp files
     && rm -r /tmp/*
+
+RUN R -e 'pak::pkg_install(c("quadbio/Pando@v1.0.4"))'
