@@ -90,3 +90,4 @@ RUN R -e 'pak::pkg_install(c( \
     && rm -r /tmp/*
 
 RUN R -e 'pak::pkg_install(c("quadbio/Pando@v1.0.4"))'
+RUN R -e 'pak::pkg_install(c("doParallel@1.0.17"))'
