@@ -91,3 +91,5 @@ RUN R -e 'pak::pkg_install(c( \
 
 RUN R -e 'pak::pkg_install(c("quadbio/Pando@v1.0.4"))'
 RUN R -e 'pak::pkg_install(c("doParallel@1.0.17"))'
+RUN R -e 'pak::pkg_install(c("chromVAR@1.28.0"))'
+RUN R -e 'pak::pkg_install(c("JASPAR2020@0.99.10"))'
