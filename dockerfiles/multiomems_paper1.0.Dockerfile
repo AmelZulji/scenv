@@ -11,7 +11,7 @@ RUN apt-get update \
 	    && /usr/sbin/update-locale LANG=en_US.UTF-8
 
 #### PYTHON ####
-# install from Posit compiled binaries https://docs.posit.co/resources/install-python.html
+# install Posit binary https://docs.posit.co/resources/install-python.html
 # Specify python version to be installed
 ENV PYTHON_VERSION="3.12.4"
 RUN curl -O https://cdn.rstudio.com/python/ubuntu-2004/pkgs/python-${PYTHON_VERSION}_1_amd64.deb \
@@ -20,19 +20,20 @@ RUN curl -O https://cdn.rstudio.com/python/ubuntu-2004/pkgs/python-${PYTHON_VERS
     # remove downloaded binray
     && rm python-${PYTHON_VERSION}_1_amd64.deb
 
+
 # add python on path
 ENV PATH=/opt/python/"${PYTHON_VERSION}"/bin:$PATH
+# copy script with listed packages to be installed
+COPY ../python_requirements.txt /tmp/python_requirements.txt
 
-    # update core python packages
+# update core python packages
 RUN pip install --upgrade pip setuptools wheel \
-    # install needed packages
-    && pip install \
-    scanpy==1.10.2 \
-    decoupler==1.7.0 \
-    snakemake==8.16.0
+    # install packages from list
+    && pip install -r /tmp/python_requirements.txt \
+    && rm -rf /root/.cache/pip
 
 #### R ####
-# install from Posit compiled binaries https://docs.posit.co/resources/install-r.html
+# install Posit binary https://docs.posit.co/resources/install-r.html
 # Specify R version to be installed
 ENV R_VERSION=4.4.1
 RUN curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.deb \
@@ -45,53 +46,10 @@ RUN curl -O https://cdn.rstudio.com/r/ubuntu-2004/pkgs/r-${R_VERSION}_1_amd64.de
     # symlink Rscript to the default path
     && ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
-RUN R -e 'install.packages("pak", repos="https://packagemanager.posit.co/cran/__linux__/focal/latest")' \
-    && R -e 'pak::pkg_install(c( \
-        "SeuratObject@4.1.3", \
-        "Seurat@4.3.0", \
-        "Signac@1.11.0", \
-        "harmony@1.2.0", \
-        "qs", \ 
-        "argparse", \
-        "hdf5r", \
-        "immunogenomics/presto@1.0.0", \
-        "optparse", \
-        "openxlsx2", \
-        "tidyverse@2.0.0", \
-        "bioc::BayesSpace@1.14.0", \
-        "bioc::MAST@1.30.0", \
-        "lme4/lme4@bfd7a44d0a718fff090412871504858559a0829f", \
-        "bioc::DESeq2@1.44.0", \
-        "bioc::scDblFinder@1.18.0", \
-        "bioc::glmGamPoi@1.16.0", \
-        "bioc::clusterProfiler@4.12.6", \
-        "bioc::batchelor@1.20.0", \
-        "bioc::org.Hs.eg.db@3.19.1", \
-        "bioc::biovizBase@1.52.0", \
-        "bioc::EnsDb.Hsapiens.v86@2.99.0" \
-    ))' \
-    # clean pak cache
-    && R -e "pak::pak_cleanup(force=TRUE)" \
-    # clean apt cache https://docs.docker.com/build/building/best-practices/#run:~:text=In%20addition%2C%20when,is%20not%20required.
-    && rm -rf /var/lib/apt/lists/* \
-    # remove tmp files
-    && rm -r /tmp/*
+# copy script with packages to be installed
+COPY ../install_R_packages.R /tmp/install_R_packages.R
 
-
-RUN R -e 'pak::pkg_install(c( \
-    "bioc::BSgenome.Hsapiens.UCSC.hg38@1.4.5", \
-    "qlcMatrix@0.9.8" \
-    ))' \
-    # clean pak cache
-    && R -e "pak::pak_cleanup(force=TRUE)" \
-    # clean apt cache https://docs.docker.com/build/building/best-practices/#run:~:text=In%20addition%2C%20when,is%20not%20required.
-    && rm -rf /var/lib/apt/lists/* \
-    # remove tmp files
-    && rm -r /tmp/*
-
-RUN R -e 'pak::pkg_install(c("quadbio/Pando@v1.0.4"))'
-RUN R -e 'pak::pkg_install(c("doParallel@1.0.17"))'
-RUN R -e 'pak::pkg_install(c("chromVAR@1.28.0"))'
-RUN R -e 'pak::pkg_install(c("JASPAR2020@0.99.10"))'
-RUN R -e 'pak::pkg_install(c("magick"))'
-RUN R -e 'pak::pkg_install(c("ggh4x"))'
+# install packages from the list
+RUN Rscript /tmp/install_R_packages.R \
+    # Clean up any leftover temporary files
+    && rm -rf /tmp/*
