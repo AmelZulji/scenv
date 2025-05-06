@@ -1,3 +1,4 @@
 scanpy==1.10.2
 decoupler==1.8.0
 snakemake==8.16.0
+omnipath==1.0.9
