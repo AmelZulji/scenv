@@ -19,16 +19,18 @@ pak::pkg_install(c(
   "Seurat@4.3.0",
   "Signac@1.11.0",
   "harmony@1.2.0",
-  "qs",
-  "argparse",
-  "hdf5r",
+  "qs@0.27.2",
+  "argparse@2.2.5",
+  "hdf5r@1.3.12",
   "openxlsx2",
   "tidyverse@2.0.0",
   "doParallel@1.0.17",
-  "magick",
-  "ggh4x",
+  "magick@2.8.5",
+  "ggh4x@0.3.0",
   "qlcMatrix@0.9.8",
   "ggsignif@0.6.4",
+  "legendry@0.2.2",
+  
   
   # Bioconductor packages
   "bioc::BayesSpace@1.14.0",
