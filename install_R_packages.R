@@ -13,24 +13,23 @@ options(repos = c(PPM = "https://packagemanager.posit.co/cran/__linux__/focal/20
 install.packages("pak")
 
 # Install all other packages with pak
-pak::pkg_install(c(
-  # CRAN 
+pak::pkg_install(
+  c(
+  # CRAN
   "SeuratObject@4.1.3",
   "Seurat@4.3.0",
   "Signac@1.11.0",
   "harmony@1.2.0",
   "qs@0.27.2",
-  "argparse@2.2.5",
-  "hdf5r@1.3.12",
-  "openxlsx2",
+  "argparse@2.2.3",
+  "hdf5r@1.3.11",
+  "openxlsx2@1.10",
   "tidyverse@2.0.0",
   "doParallel@1.0.17",
   "magick@2.8.5",
-  "ggh4x@0.3.0",
+  "ggh4x@0.2.8",
   "qlcMatrix@0.9.8",
   "ggsignif@0.6.4",
-  "legendry@0.2.2",
-  
   
   # Bioconductor packages
   "bioc::BayesSpace@1.14.0",
@@ -45,12 +44,14 @@ pak::pkg_install(c(
   "bioc::BSgenome.Hsapiens.UCSC.hg38@1.4.5",
   "bioc::chromVAR@1.26.0",
   "bioc::JASPAR2020@0.99.10",
-
+  
   # GitHub packages
   "lme4/lme4@bfd7a44d0a718fff090412871504858559a0829f",
   "immunogenomics/presto@1.0.0",
-  "quadbio/Pando@v1.0.4"
-  ))
+  "quadbio/Pando@v1.0.4",
+  "teunbrand/legendry@v0.2.1"
+  )
+)
 
 
 # Clean up
