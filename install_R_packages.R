@@ -30,6 +30,7 @@ pak::pkg_install(
   "ggh4x@0.2.8",
   "qlcMatrix@0.9.8",
   "ggsignif@0.6.4",
+  "msigdbr@7.5.1",
   
   # Bioconductor packages
   "bioc::BayesSpace@1.14.0",
